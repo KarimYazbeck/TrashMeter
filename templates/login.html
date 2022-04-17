@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+{% block title %} Login Page {% endblock %} 
+{% block content %}
+<head>
+  <style>
+    body{
+      background-color:darkslategrey;
+      color:antiquewhite
+    }
+    input{
+      background-color:darkslategrey;
+    }
+    textarea{
+      width:100%;
+      background-color:darkslategrey;
+    }
+  </style>
+</head>
+<script>
+  input1 = document.getElementById("input1")
+  input2 = document.getElementById("input2")
+  input3 = document.getElementById("input3")
+  value1 = input1.value;
+  //input4 = document.getElementById("input4")
+
+
+  function repopulate(){
+    console.log("Hello");
+    //input1.value = value1;
+  }
+</script>
+<form action="#" method="post">
+  <p>Name :</p>
+  <p><input type="text" name="firstName" /></p>
+  <p><input type="text" name="lastName" /></p>
+  <p><textarea name="texta" placeholder="Enter text here mofucka" rows="10"></textarea></p>
+  <p><input type="submit" value="Submit" id="btn" onclick="repopulate()"/></p>
+</form>
+{% endblock %}

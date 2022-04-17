@@ -1,0 +1,300 @@
+{% extends "base.html" %} {% block title %} Trash Meter {% endblock %} {% block
+content %}
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    body {
+      background-color: cadetblue;
+      color: azure;
+      font-family: "Poppins", sans-serif;
+    }
+    h1 {
+      margin-top: 30px;
+    }
+    input {
+      font-weight: 300;
+    }
+    .score {
+      text-align: center;
+      width: 20%;
+    }
+    .reason {
+      width: 70%;
+    }
+    .form-control {
+      display: inline;
+    }
+    .btn-bloq {
+      width: 90%;
+    }
+    #meter_val_hidden {
+      display: none;
+    }
+    .container {
+      margin-bottom: 100px;
+    }
+  </style>
+</head>
+
+<!-- //////  style="width: 50%" -->
+<br /><br />
+<div class="progress" style="height: 50px">
+  <div
+    class="progress-bar bg-info"
+    role="progressbar"
+    aria-valuenow="0"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    id="meter_bar"
+    style="width: 0%"
+  >
+    <span id="meter_val"></span>
+  </div>
+</div>
+<span id="meter_val_hidden">{{avg}}</span>
+
+<form action="#" method="post">
+  <br />
+  <p>
+    <input
+      type="submit"
+      class="btn btn-outline-light btn-lg"
+      value="Save"
+      onclick="remove_an_input()"
+    />
+    <button
+      type="button"
+      class="btn btn-outline-light btn-lg"
+      onclick="update_meter()"
+    >
+      Visualize
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline-light btn-lg"
+      onclick="emptyLocalStorage()"
+    >
+      Empty Local Storage
+    </button>
+  </p>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div id="reasons_for_new1">
+        <h1>Pros :</h1>
+
+        {% for i in reasons_for %}
+        <div class="row">
+          <p>
+            <input
+              class="reason col-md-8 form-control"
+              name="reasons_for_HTML"
+              placeholder="Reason"
+              value="{{i[0]}}"
+              autocomplete="off"
+            />
+            <input
+              class="score col-md-2 form-control"
+              name="scores_for_HTML"
+              placeholder="Score"
+              value="{{i[1]}}"
+              autocomplete="off"
+            />
+          </p>
+        </div>
+        <!--
+      <div class="input-group">
+        
+        <input type="text" class="form-control" placeholder="Reason">
+        <input type="text" class="form-control" placeholder="Score (/10)">
+      </div> -->
+        {% endfor %}
+      </div>
+      <div id="reasons_for_new"></div>
+
+      <!-- class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" -->
+      <input
+        type="submit"
+        class="btn btn-outline-light btn-bloq"
+        onclick="add_for_input(true)"
+        value="Add an input field"
+      />
+    </div>
+
+    <!-- REASONS AGAINST -->
+
+    <div class="col-md-6">
+      <div id="reasons_aga_new1">
+        <h1>Cons :</h1>
+
+        {% for i in reasons_against %} {% set k = 0 %}
+        <div class="row">
+          <p>
+            <input
+              class="reason col-8 form-control"
+              name="reasons_aga_HTML"
+              placeholder="Reason"
+              value="{{i[0]}}"
+              autocomplete="off"
+            />
+            <input
+              class="score col-2 form-control"
+              name="scores_aga_HTML"
+              placeholder="Score"
+              value="{{i[1]}}"
+              autocomplete="off"
+            />
+          </p>
+        </div>
+        <!--
+      <div class="input-group">
+        
+        <input type="text" class="form-control" placeholder="Reason">
+        <input type="text" class="form-control" placeholder="Score (/10)">
+      </div> -->
+        {% endfor %}
+      </div>
+      <div id="reasons_aga_new"></div>
+
+      <!-- class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" -->
+      <input
+        type="submit"
+        class="btn btn-outline-light btn-bloq"
+        onclick="add_aga_input(true)"
+        value="Add an input field"
+      />
+    </div>
+  </div>
+</form>
+
+<!--
+
+  I'm trying to understand:
+  - the 1st submit button is working nicely
+    - when i click it it saves everything in the form and tidies it too
+  - the 2nd submit button (that adds and input field) is not working as it should
+    - when i click it it adds a new input field
+    - it can edit the values that are already saved to Json (the ones in the 1st div)
+    - but it's removing the values from the 2nd div and not saving them !!!!
+
+-->
+
+<script>
+  reasons_for_new = document.getElementById("reasons_for_new");
+  reasons_for_new1 = document.getElementById("reasons_for_new1");
+
+  reasons_for_new1.innerHTML += reasons_for_new.innerHTML;
+
+  /////////////
+  meter_val_hidden = document.getElementById("meter_val_hidden");
+  meter_val = document.getElementById("meter_val");
+  meter_bar = document.getElementById("meter_bar");
+
+  update_meter_onload();
+
+  function update_meter_onload() {
+    if (localStorage.getItem("meter") == null) {
+      localStorage.setItem("meter", "0");
+    } else {
+      meter_bar.style.width = parseInt(localStorage.getItem("meter")) + "%";
+      meter_val.innerHTML = localStorage.getItem("meter");
+    }
+  }
+
+  function update_meter() {
+    console.log("ENTEREd");
+
+    meter_bar.style.width = meter_val_hidden.innerHTML + "%";
+    meter_val.innerHTML = meter_val_hidden.innerHTML;
+    localStorage.setItem("meter", meter_val_hidden.innerHTML);
+    console.log(meter_val_hidden.innerHTML);
+  }
+
+  /////////////
+
+  if (localStorage.getItem("nb_of_blank_fors") == null)
+    localStorage.setItem("nb_of_blank_fors", 0);
+  else {
+    nb_of_blank_fors = localStorage.getItem("nb_of_blank_fors");
+    for (var i = 0; i < nb_of_blank_fors; i++) {
+      add_for_input(false);
+    }
+  }
+
+  //////
+
+  if (localStorage.getItem("nb_of_blank_agas") == null)
+    localStorage.setItem("nb_of_blank_agas", 0);
+  else {
+    nb_of_blank_agas = localStorage.getItem("nb_of_blank_agas");
+    for (var i = 0; i < nb_of_blank_agas; i++) {
+      add_aga_input(false);
+    }
+  }
+
+  //////////////////////////////
+
+  function remove_an_input() {
+    if (localStorage.getItem("nb_of_blank_fors") > "0") {
+      localStorage.setItem(
+        "nb_of_blank_fors",
+        localStorage.getItem("nb_of_blank_fors") - 1
+      );
+    }
+    if (localStorage.getItem("nb_of_blank_agas") > "0") {
+      localStorage.setItem(
+        "nb_of_blank_agas",
+        localStorage.getItem("nb_of_blank_agas") - 1
+      );
+    }
+  }
+
+  function remove_an_input_aga() {
+    localStorage.setItem(
+      "nb_of_blank_agas",
+      localStorage.getItem("nb_of_blank_agas") - 1
+    );
+  }
+
+  function emptyLocalStorage() {
+    localStorage.setItem("nb_of_blank_fors", "0");
+    localStorage.setItem("nb_of_blank_agas", "0");
+  }
+
+  function add_for_input(change) {
+    // when change is true, localStorage changes the nb of blank fors
+    if (change) {
+      localStorage.setItem(
+        "nb_of_blank_fors",
+        parseInt(localStorage.getItem("nb_of_blank_fors")) + 1
+      );
+    }
+
+    reasons_for_new.innerHTML +=
+      "<div class='row'><p><input class='reason col-8 form-control' name='reasons_for_HTML' placeholder='Reason' autocomplete='off'><input class='score col-2 form-control' name='scores_for_HTML' placeholder='Score' autocomplete='off'></p></div>";
+    //return false;
+  }
+
+  /////////////////
+
+  function add_aga_input(change) {
+    // when change is true, localStorage changes the nb of blank agas
+    if (change) {
+      localStorage.setItem(
+        "nb_of_blank_agas",
+        parseInt(localStorage.getItem("nb_of_blank_agas")) + 1
+      );
+    }
+
+    reasons_aga_new.innerHTML +=
+      "<div class='row'><p><input class='reason col-8 form-control' name='reasons_aga_HTML' placeholder='Reason' autocomplete='off' ><input class='score col-2 form-control' name='scores_aga_HTML' placeholder='Score' autocomplete='off'></p></div>";
+    //return false;
+  }
+</script>
+{% endblock %}

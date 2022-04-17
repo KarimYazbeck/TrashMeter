@@ -1,0 +1,42 @@
+[
+    {
+        "reason": "Nescafe",
+        "score": "10",
+        "type": "for"
+    },
+    {
+        "reason": "Baad l akel",
+        "score": "7",
+        "type": "for"
+    },
+    {
+        "reason": "bas khales et7amam",
+        "score": "8",
+        "type": "for"
+    },
+    {
+        "reason": "asd",
+        "score": "12",
+        "type": "for"
+    },
+    {
+        "reason": "qwert",
+        "score": "122",
+        "type": "for"
+    },
+    {
+        "reason": "health",
+        "score": "7",
+        "type": "against"
+    },
+    {
+        "reason": "ri7alp",
+        "score": "10",
+        "type": "against"
+    },
+    {
+        "reason": "pope",
+        "score": "100",
+        "type": "against"
+    }
+]

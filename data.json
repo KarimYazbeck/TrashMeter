@@ -1,0 +1,23 @@
+[
+    {
+        "reason":"I like it",
+        "type":"for",
+        "score": 6
+    },
+    {
+        "reason":"Health",
+        "type":"against",
+        "score": 9
+    },
+    {
+        "reason":"Coffee",
+        "type":"for",
+        "score": 9
+    },
+    {
+        "reason":"I hate it",
+        "type":"against",
+        "score": 6
+    }
+    
+]
