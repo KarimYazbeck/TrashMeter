@@ -1,0 +1,2 @@
+# TrashMeter
+Decisional balance tool
